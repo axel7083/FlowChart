@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/transparent"
+    android:id="@+id/card_layout"
+    android:orientation="vertical">
+
+    <TextView
+        android:text="Empty"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:textColor="@color/textColorPrimary"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:text="Click to edit"
+        android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textColor="@color/textColorPrimary"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
