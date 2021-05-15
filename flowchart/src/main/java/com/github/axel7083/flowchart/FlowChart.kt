@@ -25,8 +25,9 @@ class FlowChart : ViewGroup {
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?) : super(context)
 
+    val cardsHolder : HashMap<View, NodeView> = HashMap()
+
     private val paintBg = Paint()
-    private val cardsHolder : HashMap<View, NodeView> = HashMap()
     private var bufferLine: Pair<Float, Float>? = null
 
     private val slotsSize = NodeView.getPixelSize(50f, context).toInt()
@@ -57,16 +58,19 @@ class FlowChart : ViewGroup {
 
     fun addCard(node: Node) {
         val nodeView = NodeView(context, this)
+        nodeView.node = node
+        nodeView.setTitle(node.title)
+        nodeView.setDescription(node.description)
+
 
         node.slots?.forEach { slot ->
             nodeView.addSlot(slot, this)
             if(slot.event != null) {
                 slot.view.setOnClickListener {view ->
-                    slot.event.onClick(context,slot, nodeView, this)
+                    slot.event.onSlotClicked(context,slot, nodeView, this)
                 }
             }
-
-            if(!slot.isInput) {
+            else if(!slot.isInput) {
                 Log.d(TAG, "addCard: set outputListener")
                 slot.view.isClickable = false
                 slot.view.setOnTouchListener(outputListener)
@@ -75,95 +79,15 @@ class FlowChart : ViewGroup {
 
         nodeView.card.setOnTouchListener(draggableListener)
 
+        nodeView.card.setOnClickListener {
+            node.onNodeClicked(context,nodeView, this)
+        }
+
         nodeView.card.x = 200f
         nodeView.card.y = 200f
         cardsHolder[nodeView.card] = nodeView
         invalidate()
     }
-
-
-    /*fun addCard(): NodeView {
-        // Creating a node
-        val nodeView = NodeView(context, this)
-
-        //Adding a slot
-        val input1 = nodeView.setInput(this, "IN")
-        val plus = nodeView.addOutput(this, "+", Color.BLUE)
-
-        nodeView.card.setOnClickListener {
-            Toast.makeText(context, "EDITING",Toast.LENGTH_SHORT).show()
-        }
-
-        // Adding touch listener to card
-        nodeView.card.setOnTouchListener(object : OnTouchListener {
-            override fun onTouch(view: View, event: MotionEvent): Boolean {
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        lastTouch = System.currentTimeMillis()
-                        Log.d(TAG, "onTouch: DOWN")
-                        dX = event.x
-                        dY = event.y
-                    }
-                    MotionEvent.ACTION_UP -> {
-                        if(System.currentTimeMillis()-lastTouch < 250) {
-                            view.performClick()
-                        }
-                    }
-                    MotionEvent.ACTION_MOVE -> {
-                        if(System.currentTimeMillis()-lastTouch < 100) return false
-
-                        Log.d(TAG, "onTouch: MOVE")
-                        var x = event.x + view.x - dX
-                        var y = event.y + view.y - dY
-                        x += (SPACING - (x % SPACING))
-                        y += (SPACING - (y % SPACING))
-                        view.x = x
-                        view.y = y
-                        cardsHolder[view]?.updatePos()
-                        invalidate()
-                    }
-                    else -> {
-                        Log.d(TAG, "onTouch: ELSE")
-                        return false
-                    }
-                }
-
-                return true
-            }
-
-        })
-
-        plus.setOnClickListener {
-            /*val dialog = SelectDialog(context) { output ->
-                if(output != null) {
-                    val o = node.addOutput(this, output)
-                    slotsHolder[o] = node
-                    o.setOnTouchListener(outputListener)
-                    invalidate()
-                }
-                else {
-                    invalidate()
-                }
-
-            }
-            val window = dialog.window
-            if (window != null) {
-                window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                dialog.show()
-                window.setGravity(Gravity.CENTER)
-                window.setLayout(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-            }*/
-        }
-
-        Log.d(TAG, "addCard: ${input1.measuredWidth} ")
-        Log.d(TAG, "addCard: ${input1.width} ")
-        cardsHolder[nodeView.card] = nodeView
-        invalidate()
-        return nodeView
-    }*/
 
     private val outputListener = object : OnTouchListener {
         override fun onTouch(view: View, event: MotionEvent): Boolean {
@@ -198,7 +122,8 @@ class FlowChart : ViewGroup {
                                     && y >= slotTo.view.y
                                     && y <= slotTo.view.y + slotTo.view.height
                             ) {
-                                view.slot.links = (view.slot.links ?: ArrayList()).plus(slotTo)
+
+                                view.slot.createLink(slotTo)
                                 Log.d(TAG, "onTouch: creating link")
                                 break;
                             }
@@ -293,16 +218,18 @@ class FlowChart : ViewGroup {
 
             nodeView.slots.forEach { slotFrom ->
 
-                slotFrom.links?.forEach { slotTo ->
-                    var fromX = slotFrom.view.x + slotFrom.view.width/2
-                    var fromY = slotFrom.view.y + slotFrom.view.height/2
-                    val toX = slotTo.view.x + slotTo.view.width/2
-                    val toY = slotTo.view.y + slotTo.view.height/2
+                slotFrom.outputs?.forEach { slotTo ->
+                    if(slotTo.isInput) {
+                        var fromX = slotFrom.view.x + slotFrom.view.width/2
+                        var fromY = slotFrom.view.y + slotFrom.view.height/2
+                        val toX = slotTo.view.x + slotTo.view.width/2
+                        val toY = slotTo.view.y + slotTo.view.height/2
 
-                    p.color = slotTo.color
-                    (slotFrom.view).binding.layout.setBackgroundColor(p.color)
+                        p.color = slotTo.color
+                        (slotFrom.view).binding.layout.setBackgroundColor(p.color)
 
-                    drawPath(canvas, fromX, fromY, toX, toY, nodeView, slotTo.parent, p)
+                        drawPath(canvas, fromX, fromY, toX, toY, nodeView, slotTo.parent, p)
+                    }
                 }
             }
         }

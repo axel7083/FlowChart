@@ -57,6 +57,14 @@
             android:layout_marginHorizontal="5dp"/>
 
         <Button
+            android:id="@+id/addIntegerOutput"
+            android:text="Add Integer Node"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"/>
+
+        <Button
             android:id="@+id/addDisplay"
             android:layout_weight="1"
             android:text="Add Display Node"
@@ -65,5 +73,15 @@
             android:layout_marginHorizontal="5dp"/>
 
     </LinearLayout>
+
+
+    <Button
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/execute"
+        android:text="Execute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import com.github.axel7083.flowchart.FlowChart
+import com.github.axel7083.flowchart.models.Node
 import com.github.axel7083.flowchart.models.Slot
 import java.util.*
 import kotlin.collections.ArrayList
@@ -13,16 +14,45 @@ import kotlin.math.max
 
 class NodeView(val context: Context, parent: ViewGroup) {
 
+    lateinit var node: Node
     private var count: IntArray = IntArray(4)
     var slots: List<Slot> = ArrayList()
 
-    var card: View = CardView(context)
+    var card: CardView = CardView(context)
 
     var minWidth = 0f
     var minHeight = 0f
 
     init {
         parent.addView(card)
+    }
+
+    fun getOutputPos(unknown: Slot): Int {
+        var i = 0
+        slots.forEach { slot ->
+            if(!slot.isStatic) {
+                if (!slot.isInput) {
+                    if (unknown == slot)
+                        return i
+                    else
+                        i++
+                }
+            }}
+        return -1
+    }
+
+    fun getSlots(): Pair<ArrayList<Slot>, ArrayList<Slot>> {
+        val inputs = ArrayList<Slot>()
+        val outputs = ArrayList<Slot>()
+        slots.forEach { slot ->
+            if(!slot.isStatic) {
+                if(slot.isInput)
+                    inputs.add(slot)
+                else
+                    outputs.add(slot)
+            }
+        }
+        return Pair(inputs, outputs)
     }
 
     fun getSlot(view: View): Slot? {
@@ -33,10 +63,18 @@ class NodeView(val context: Context, parent: ViewGroup) {
         return null
     }
 
+    fun setTitle(str: String) {
+        card.binding.title.text = str
+    }
+
+    fun setDescription(str: String) {
+        card.binding.desc.text = str
+    }
+
     fun computeMinimums() {
         // Checking the min dimension of the card
-        minWidth = (FlowChart.SPACING * 2f) * max(count[getIndex(Slot.Positions.BOTTOM)], count[getIndex(Slot.Positions.TOP)])
-        minHeight = (FlowChart.SPACING * 2f)  * max(count[getIndex(Slot.Positions.LEFT)], count[getIndex(Slot.Positions.RIGHT)])
+        minWidth = max((FlowChart.SPACING * 2f) * max(count[getIndex(Slot.Positions.BOTTOM)], count[getIndex(Slot.Positions.TOP)]), card.measuredWidth.toFloat())
+        minHeight =  max((FlowChart.SPACING * 2f)  * max(count[getIndex(Slot.Positions.LEFT)], count[getIndex(Slot.Positions.RIGHT)]), card.measuredHeight.toFloat())
     }
 
     fun updatePos() {
@@ -133,11 +171,6 @@ class NodeView(val context: Context, parent: ViewGroup) {
         view.z = 99f
         return view
     }
-
-    /*fun link(input: View, nodeView: NodeView) {
-        (goto[input]?.input as SlotView?)?.binding?.layout?.setBackgroundColor(Color.BLUE)
-        goto[input] = nodeView
-    }*/
 
     companion object {
         const val SLOT_SPACING = 50f
