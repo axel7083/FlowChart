@@ -42,3 +42,11 @@ Add the dependency
  <version>Tag</version>
 </dependency>
 ```
+
+# Under the Hood
+
+The FlowGraph class is extending the ViewGroup class.
+
+# Todo
+
+A lot.
