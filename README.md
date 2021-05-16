@@ -1,7 +1,8 @@
 # FlowChart
 [![](https://jitpack.io/v/axel7083/FlowChart.svg)](https://jitpack.io/#axel7083/FlowChart)
+![Screenshot](https://github.com/axel7083/FlowChart/blob/main/Screenshot.jpg)
 
-
+The goal of this library is to provide an easy to use system for visual programming, and easy configuration. The repository contains an simple application example, showing how to use the library with 3 nodes (display, value, and sum).
 
 # Download
 
@@ -41,3 +42,11 @@ Add the dependency
  <version>Tag</version>
 </dependency>
 ```
+
+# Under the Hood
+
+The FlowGraph class is extending the ViewGroup class.
+
+# Todo
+
+A lot.
