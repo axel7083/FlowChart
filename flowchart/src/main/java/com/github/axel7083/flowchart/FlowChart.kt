@@ -256,11 +256,6 @@ class FlowChart : ViewGroup {
                 newFromY = fromY + space
 
                 if (fromY < (toY - 2*space)) {
-                    /*canvas.drawLine(newFromX, newFromY,
-                            toX, newFromY, p)
-                    newFromX = toX
-                    canvas.drawLine(newFromX, newFromY,
-                            toX, toY, p)*/
                     canvas.drawLine(newFromX, newFromY,
                             newFromX, toY - space, p)
                     newFromY = toY - space
