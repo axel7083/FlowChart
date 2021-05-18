@@ -64,11 +64,11 @@ class NodeView(val context: Context, parent: ViewGroup) {
     }
 
     fun setTitle(str: String) {
-        card.binding.title.text = str
+        card.title.text = str
     }
 
     fun setDescription(str: String) {
-        card.binding.desc.text = str
+        card.desc.text = str
     }
 
     fun computeMinimums() {
@@ -165,8 +165,8 @@ class NodeView(val context: Context, parent: ViewGroup) {
 
     private fun inflateSlot(parent: ViewGroup, color: Int, str: String): SlotView {
         val view = SlotView(context)
-        view.binding.layout.setBackgroundColor(color)
-        view.binding.value.text = str
+        view.linearLayout.setBackgroundColor(color)
+        view.value.text = str
         parent.addView(view)
         view.z = 99f
         return view
