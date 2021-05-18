@@ -32,7 +32,7 @@ class Slot(val id: Long,
         }
 
         // if the out slot is full (already reached the maximum number of input we remove one
-        if(out.inputs != null && out.inputs!!.size >= out.inputsLimit && inputsLimit != -1) {
+        if(out.inputs != null && out.inputs!!.size >= out.inputsLimit && out.inputsLimit != -1) {
             val previousLinkedSlot = out.inputs!!.removeAt(0)
             previousLinkedSlot.outputs!!.remove(out)
         }
