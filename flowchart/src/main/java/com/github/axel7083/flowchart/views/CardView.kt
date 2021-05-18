@@ -2,13 +2,14 @@ package com.github.axel7083.flowchart.views
 
 import android.content.Context
 import android.view.Gravity
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.github.axel7083.flowchart.R
 
 class CardView(context: Context) : LinearLayout(context) {
-    val view = inflate(context, R.layout.view_card,this)
+    val view: View = inflate(context, R.layout.view_card,this)
     var title: TextView = view.findViewById(R.id.title)
     var desc: TextView = view.findViewById(R.id.desc)
 
