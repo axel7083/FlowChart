@@ -20,4 +20,8 @@ class DisplayInputNode : Node {
         return null
     }
 
+    override fun onNodeClicked(context: Context, view: NodeView, flowChart: FlowChart) {
+        flowChart.deleteCard(view)
+    }
+
 }

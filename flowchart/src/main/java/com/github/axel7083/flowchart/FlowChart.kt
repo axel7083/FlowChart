@@ -88,6 +88,16 @@ class FlowChart : ViewGroup {
         invalidate()
     }
 
+    fun deleteCard(nodeView: NodeView) {
+        cardsHolder.remove(nodeView.card)
+        removeView(nodeView.card)
+
+        nodeView.node.slots?.forEach { slot ->
+            removeView(slot.view)
+            slot.removeAllLinks()
+        }
+    }
+
     fun registerDragger(slot: Slot) {
         Log.d(TAG, "addCard: set outputListener")
         slot.view.isClickable = false

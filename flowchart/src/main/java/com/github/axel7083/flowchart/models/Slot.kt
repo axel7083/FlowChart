@@ -41,6 +41,16 @@ class Slot(val id: Long,
         out.inputs = (out.inputs?:ArrayList()).plus(this) as ArrayList<Slot>
     }
 
+    fun removeAllLinks() {
+        outputs?.forEach { slot ->
+            slot.inputs?.remove(this)
+        }
+
+        inputs?.forEach { slot ->
+            slot.outputs?.remove(this)
+        }
+    }
+
     enum class Positions {
         TOP,
         BOTTOM,
