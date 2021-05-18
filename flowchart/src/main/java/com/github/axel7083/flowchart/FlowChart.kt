@@ -88,7 +88,7 @@ class FlowChart : ViewGroup {
         invalidate()
     }
 
-    private fun registerDragger(slot: Slot) {
+    fun registerDragger(slot: Slot) {
         Log.d(TAG, "addCard: set outputListener")
         slot.view.isClickable = false
         slot.view.setOnTouchListener(outputListener)
