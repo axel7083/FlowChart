@@ -2,7 +2,7 @@ package com.github.axel7083.flowchartexample.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.github.axel7083.flowchart.Executer
+import com.github.axel7083.flowchartexample.executers.Executer
 import com.github.axel7083.flowchartexample.models.IntSumNode
 import com.github.axel7083.flowchartexample.databinding.ActivityMainBinding
 import com.github.axel7083.flowchartexample.models.DisplayInputNode

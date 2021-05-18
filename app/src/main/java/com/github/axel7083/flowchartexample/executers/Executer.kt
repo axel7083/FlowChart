@@ -1,8 +1,8 @@
-package com.github.axel7083.flowchart
+package com.github.axel7083.flowchartexample.executers
 
 import android.content.Context
 import android.util.Log
-import android.view.View
+import com.github.axel7083.flowchart.FlowChart
 import com.github.axel7083.flowchart.views.NodeView
 
 class Executer(val context: Context,val flowChart: FlowChart) {
