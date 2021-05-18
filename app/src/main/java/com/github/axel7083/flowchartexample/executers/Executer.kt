@@ -21,7 +21,7 @@ class Executer(val context: Context,val flowChart: FlowChart) {
         if(values.containsKey(nodeView))
             return
 
-        Log.d(TAG, getSpace(k)+"compute: title: ${nodeView.card.binding.title.text} | ${nodeView.card.binding.desc.text}")
+        Log.d(TAG, getSpace(k)+"compute: title: ${nodeView.card.title.text} | ${nodeView.card.desc.text}")
 
         values[nodeView] = null
 
@@ -34,12 +34,12 @@ class Executer(val context: Context,val flowChart: FlowChart) {
 
             // Iterating all outputs (from other node link to the current input slot i )
             slots.first[i].inputs?.forEach { parentSlot ->
-                Log.d(TAG, getSpace(k)+"compute: (parent title: ${parentSlot.parent.card.binding.title.text})")
+                Log.d(TAG, getSpace(k)+"compute: (parent title: ${parentSlot.parent.card.title.text})")
                 // If the parent element has not been computed yet
                 if(!values.containsKey(parentSlot.parent)) {
                     Log.d(TAG, getSpace(k)+"compute: computing parent start")
                     compute(parentSlot.parent, k + 1)
-                    Log.d(TAG, getSpace(k)+"compute: computing parent finish ${nodeView.card.binding.title.text}")
+                    Log.d(TAG, getSpace(k)+"compute: computing parent finish ${nodeView.card.title.text}")
                 }
 
                 val index = parentSlot.parent.getOutputPos(parentSlot)
@@ -62,7 +62,7 @@ class Executer(val context: Context,val flowChart: FlowChart) {
             // Iterating all inputs (from other node link to the current input slot i )
             slots.second[i].outputs?.forEach { childSlot ->
 
-                Log.d(TAG, getSpace(k)+"compute: (child title: ${childSlot.parent.card.binding.title.text})")
+                Log.d(TAG, getSpace(k)+"compute: (child title: ${childSlot.parent.card.title.text})")
 
                 // If the child element has not been computed yet
                 if(!values.containsKey(childSlot.parent)) {

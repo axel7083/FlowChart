@@ -226,7 +226,7 @@ class FlowChart : ViewGroup {
                         val toY = slotTo.view.y + slotTo.view.height/2
 
                         p.color = slotTo.color
-                        (slotFrom.view).binding.layout.setBackgroundColor(p.color)
+                        (slotFrom.view).linearLayout.setBackgroundColor(p.color)
 
                         drawPath(canvas, fromX, fromY, toX, toY, nodeView, slotTo.parent, p)
                     }
