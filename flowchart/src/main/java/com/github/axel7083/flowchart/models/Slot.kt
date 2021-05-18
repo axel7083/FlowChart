@@ -26,13 +26,13 @@ class Slot(val id: Long,
     fun createLink(out: Slot) {
 
         // if we have too much link, we remove the first one to be able to create a new one
-        if(outputs != null && outputs!!.size >= outputsLimit) {
+        if(outputs != null && (outputs!!.size >= outputsLimit || outputsLimit == -1)) {
             val previousLinkedSlot = outputs!!.removeAt(0)
             previousLinkedSlot.inputs?.remove(this)
         }
 
         // if the out slot is full (already reached the maximum number of input we remove one
-        if(out.inputs != null && out.inputs!!.size >= out.inputsLimit) {
+        if(out.inputs != null && (out.inputs!!.size >= out.inputsLimit || inputsLimit == -1)) {
             val previousLinkedSlot = out.inputs!!.removeAt(0)
             previousLinkedSlot.outputs!!.remove(out)
         }
