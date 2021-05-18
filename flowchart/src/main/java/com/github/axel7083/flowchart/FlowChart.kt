@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.github.axel7083.flowchart.models.Node
+import com.github.axel7083.flowchart.models.Slot
 import com.github.axel7083.flowchart.views.NodeView
 import com.github.axel7083.flowchart.views.SlotView
 import kotlin.math.max
@@ -71,9 +72,7 @@ class FlowChart : ViewGroup {
                 }
             }
             else if(!slot.isInput) {
-                Log.d(TAG, "addCard: set outputListener")
-                slot.view.isClickable = false
-                slot.view.setOnTouchListener(outputListener)
+                registerDragger(slot)
             }
         }
 
@@ -87,6 +86,12 @@ class FlowChart : ViewGroup {
         nodeView.card.y = 200f
         cardsHolder[nodeView.card] = nodeView
         invalidate()
+    }
+
+    private fun registerDragger(slot: Slot) {
+        Log.d(TAG, "addCard: set outputListener")
+        slot.view.isClickable = false
+        slot.view.setOnTouchListener(outputListener)
     }
 
     private val outputListener = object : OnTouchListener {
