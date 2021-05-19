@@ -4,9 +4,10 @@ import android.content.Context
 import android.view.ViewGroup
 import com.github.axel7083.flowchart.FlowChart
 import com.github.axel7083.flowchart.views.NodeView
+import java.io.Serializable
 import kotlin.properties.Delegates
 
-interface Node {
+interface Node : Serializable {
     val slots: ArrayList<Slot>?
     val title: String
     val description: String

@@ -6,6 +6,7 @@ import android.view.View
 import com.github.axel7083.flowchart.FlowChart
 import com.github.axel7083.flowchart.views.NodeView
 import com.github.axel7083.flowchart.views.SlotView
+import java.io.Serializable
 
 class Slot(val id: Long,
            val str: String,
@@ -15,10 +16,10 @@ class Slot(val id: Long,
            val outputsLimit: Int = 1,
            val event: OnEvent? = null,
            val isStatic: Boolean = false,
-           var color: Int = -1) {
+           var color: Int = -1): Serializable {
 
-    lateinit var view: SlotView
-    lateinit var parent: NodeView
+    @Transient lateinit var view: SlotView
+    @Transient lateinit var parent: NodeView
 
     var outputs: ArrayList<Slot>? = null
     var inputs: ArrayList<Slot>? = null
