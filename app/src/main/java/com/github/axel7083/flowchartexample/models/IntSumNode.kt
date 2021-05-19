@@ -35,7 +35,8 @@ class IntSumNode : Node, Slot.OnEvent {
     var i: Long = 0
     override fun onSlotClicked(context: Context, slot: Slot, view: NodeView, flowChart: FlowChart) {
         i++
-        view.addSlot(Slot(i,"\\/",Slot.Positions.TOP,true),flowChart)
+
+        slots.add(view.addSlot(Slot(i,"\\/",Slot.Positions.TOP,true),flowChart))
         flowChart.invalidate()
     }
 

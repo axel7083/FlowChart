@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Point
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
@@ -15,6 +17,7 @@ import com.github.axel7083.flowchart.models.Slot
 import com.github.axel7083.flowchart.views.NodeView
 import com.github.axel7083.flowchart.views.SlotView
 import kotlin.math.max
+
 
 class FlowChart : ViewGroup {
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(
@@ -36,6 +39,7 @@ class FlowChart : ViewGroup {
     private var size: Int = 1
 
     init {
+        isSaveEnabled = true
         setSize()
 
         paintBg.color = Color.GRAY
@@ -57,12 +61,14 @@ class FlowChart : ViewGroup {
         this.layoutParams = FrameLayout.LayoutParams(s,s)
     }
 
-    fun addCard(node: Node) {
+    fun addCard(node: Node, x : Float = 200f, y: Float = 200f) {
         val nodeView = NodeView(context, this)
         nodeView.node = node
         nodeView.setTitle(node.title)
         nodeView.setDescription(node.description)
 
+        nodeView.card.x = x
+        nodeView.card.y = y
 
         node.slots?.forEach { slot ->
             nodeView.addSlot(slot, this)
@@ -82,8 +88,6 @@ class FlowChart : ViewGroup {
             node.onNodeClicked(context,nodeView, this)
         }
 
-        nodeView.card.x = 200f
-        nodeView.card.y = 200f
         cardsHolder[nodeView.card] = nodeView
         invalidate()
     }
@@ -362,6 +366,50 @@ class FlowChart : ViewGroup {
             // Set nodes positions
             node.updatePos()
         }
+    }
+
+    override fun onSaveInstanceState(): Parcelable {
+        // Obtain any state that our super class wants to save.
+        val superState = super.onSaveInstanceState()
+
+        // Wrap our super class's state with our own.
+        val savedState = SavedState(superState)
+        savedState.size = size
+
+
+        val nodeViews = cardsHolder.values
+        val nodes = ArrayList<Node>()
+        val points = ArrayList<Point>()
+        nodeViews.forEach { nodeView ->
+            nodes.add(nodeView.node)
+            points.add(Point(nodeView.card.x.toInt(),nodeView.card.y.toInt()))
+        }
+
+        savedState.nodes = nodes
+        savedState.coords = points
+
+        // Return our state along with our super class's state.
+        return savedState
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable) {
+        val savedState = state as SavedState
+        super.onRestoreInstanceState(savedState.superState)
+
+        // Grab our properties out of our SavedState.
+        this.size = savedState.size
+        setSize()
+
+        for(i in 0 until savedState.nodes.size) {
+            addCard(
+                savedState.nodes[i],
+                savedState.coords[i].x.toFloat(),
+                savedState.coords[i].y.toFloat()
+            )
+        }
+
+        requestLayout()
+        invalidate()
     }
 
     companion object {
