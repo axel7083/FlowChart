@@ -375,14 +375,14 @@ class FlowChart : ViewGroup {
         }
     }
 
-    class Link(
+    inner class Link(
         val idNodeA: Long,
         val idNodeB: Long,
         val idSlotA: Long,
         val idSlotB: Long
     )
 
-    inner class Data: Serializable {
+    class Data: Serializable {
         var size: Int = 1
         var nodes: ArrayList<Node> = ArrayList()
         var links: ArrayList<Link> = ArrayList()
