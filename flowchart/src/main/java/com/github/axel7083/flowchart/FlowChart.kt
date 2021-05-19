@@ -375,7 +375,7 @@ class FlowChart : ViewGroup {
         }
     }
 
-    inner class Link(
+    class Link(
         val idNodeA: Long,
         val idNodeB: Long,
         val idSlotA: Long,
