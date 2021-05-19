@@ -14,7 +14,7 @@ class Slot(val id: Long,
            val isInput: Boolean,
            val inputsLimit: Int = 1,
            val outputsLimit: Int = 1,
-           val event: OnEvent? = null,
+           @Transient val event: OnEvent? = null,
            val isStatic: Boolean = false,
            var color: Int = -1): Serializable {
 
