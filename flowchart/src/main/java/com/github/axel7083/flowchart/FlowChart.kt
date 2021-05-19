@@ -370,8 +370,8 @@ class FlowChart : ViewGroup {
 
     inner class Data {
         var size = 1
-        val nodes = ArrayList<Node>()
-        val points = ArrayList<Point>()
+        var nodes = ArrayList<Node>()
+        var points = ArrayList<Point>()
     }
 
     fun getData(): Data {
@@ -384,6 +384,21 @@ class FlowChart : ViewGroup {
         }
         data.size = size
         return data
+    }
+
+    fun restoreData(data: Data) {
+        this.size = data.size
+        setSize()
+
+        for(i in 0 until data.nodes.size) {
+            addCard(
+                data.nodes[i],
+                data.points[i].x.toFloat(),
+                data.points[i].y.toFloat()
+            )
+        }
+        requestLayout()
+        invalidate()
     }
 
     override fun onSaveInstanceState(): Parcelable {
@@ -403,20 +418,12 @@ class FlowChart : ViewGroup {
         val savedState = state as SavedState
         super.onRestoreInstanceState(savedState.superState)
 
-        // Grab our properties out of our SavedState.
-        this.size = savedState.size
-        setSize()
+        val data = Data()
+        data.nodes  = savedState.nodes
+        data.points = savedState.coords
+        data.size = savedState.size
 
-        for(i in 0 until savedState.nodes.size) {
-            addCard(
-                savedState.nodes[i],
-                savedState.coords[i].x.toFloat(),
-                savedState.coords[i].y.toFloat()
-            )
-        }
-
-        requestLayout()
-        invalidate()
+        restoreData(data)
     }
 
     companion object {
