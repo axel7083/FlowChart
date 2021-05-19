@@ -9,7 +9,7 @@ import android.view.View
 import com.github.axel7083.flowchart.models.Node
 
 
-internal class SavedState : View.BaseSavedState {
+class SavedState : View.BaseSavedState {
 
     var size : Int = 1
     lateinit var nodes: ArrayList<Node>

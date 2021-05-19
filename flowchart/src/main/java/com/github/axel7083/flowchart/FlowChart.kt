@@ -368,16 +368,11 @@ class FlowChart : ViewGroup {
         }
     }
 
-    override fun onSaveInstanceState(): Parcelable {
-        // Obtain any state that our super class wants to save.
-        val superState = super.onSaveInstanceState()
-
-        // Wrap our super class's state with our own.
+    fun getState(superState: Parcelable?): SavedState {
         val savedState = SavedState(superState)
-        savedState.size = size
-
 
         val nodeViews = cardsHolder.values
+
         val nodes = ArrayList<Node>()
         val points = ArrayList<Point>()
         nodeViews.forEach { nodeView ->
@@ -385,11 +380,16 @@ class FlowChart : ViewGroup {
             points.add(Point(nodeView.card.x.toInt(),nodeView.card.y.toInt()))
         }
 
+        savedState.size = size
         savedState.nodes = nodes
         savedState.coords = points
-
-        // Return our state along with our super class's state.
         return savedState
+    }
+
+    override fun onSaveInstanceState(): Parcelable {
+        // Obtain any state that our super class wants to save.
+        val superState = super.onSaveInstanceState()
+        return getState(superState)
     }
 
     override fun onRestoreInstanceState(state: Parcelable) {
