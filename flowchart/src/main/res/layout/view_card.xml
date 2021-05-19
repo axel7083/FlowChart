@@ -11,8 +11,7 @@
     <TextView
         android:id="@+id/title"
         android:text="Empty"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:textSize="25sp"
         android:gravity="center"
         android:textColor="@color/textColorPrimary"
