@@ -21,8 +21,8 @@ class Slot(val id: Long,
     @Transient lateinit var view: SlotView
     @Transient lateinit var parent: NodeView
 
-    var outputs: ArrayList<Slot>? = null
-    var inputs: ArrayList<Slot>? = null
+    @Transient var outputs: ArrayList<Slot>? = null
+    @Transient var inputs: ArrayList<Slot>? = null
 
     fun createLink(out: Slot) {
 

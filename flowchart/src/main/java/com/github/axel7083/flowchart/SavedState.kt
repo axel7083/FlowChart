@@ -14,6 +14,7 @@ class SavedState : View.BaseSavedState {
     var size : Int = 1
     lateinit var nodes: ArrayList<Node>
     lateinit var coords: ArrayList<Point>
+    lateinit var links: ArrayList<FlowChart.Link>
 
 
     constructor(superState: Parcelable?) : super(superState) {}
@@ -22,6 +23,7 @@ class SavedState : View.BaseSavedState {
         size = `in`.readInt()
         `in`.readList(nodes,nodes::class.java.classLoader)
         `in`.readList(coords,coords::class.java.classLoader)
+        `in`.readList(links,links::class.java.classLoader)
     }
 
     override fun writeToParcel(out: Parcel, flags: Int) {
@@ -29,6 +31,7 @@ class SavedState : View.BaseSavedState {
         out.writeInt(size)
         out.writeList(nodes)
         out.writeList(coords)
+        out.writeList(links)
     }
 
     override fun describeContents(): Int {

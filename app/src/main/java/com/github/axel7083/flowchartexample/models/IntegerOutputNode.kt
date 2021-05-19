@@ -11,7 +11,7 @@ import com.github.axel7083.flowchart.models.Slot
 import com.github.axel7083.flowchart.views.NodeView
 import com.github.axel7083.flowchartexample.dialogs.SelectDialog
 
-class IntegerOutputNode : Node {
+class IntegerOutputNode : Node() {
 
     override val title: String = "Integer node"
     override val description: String = "(click to select)"

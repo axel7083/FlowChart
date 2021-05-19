@@ -52,7 +52,7 @@ class Executer(val context: Context,val flowChart: FlowChart) {
 
         Log.d(TAG, getSpace(k)+"compute: computing current node")
         // We compute the current node
-        values[nodeView] = nodeView.node.execute(data,context, nodeView, flowChart) as Array<*>?
+        values[nodeView] = nodeView.node.execute(data,context, nodeView, flowChart) as Array<Any>?
         printArray(values[nodeView])
 
         Log.d(TAG, getSpace(k)+"compute: has ${slots.second.size} output slot")

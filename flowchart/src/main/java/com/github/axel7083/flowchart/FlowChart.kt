@@ -16,6 +16,7 @@ import com.github.axel7083.flowchart.models.Node
 import com.github.axel7083.flowchart.models.Slot
 import com.github.axel7083.flowchart.views.NodeView
 import com.github.axel7083.flowchart.views.SlotView
+import java.io.Serializable
 import kotlin.math.max
 
 
@@ -37,6 +38,8 @@ class FlowChart : ViewGroup {
     private val slotsSize = NodeView.getPixelSize(50f, context).toInt()
 
     private var size: Int = 1
+
+    private var idCount = 0L
 
     init {
         isSaveEnabled = true
@@ -69,6 +72,9 @@ class FlowChart : ViewGroup {
 
         nodeView.card.x = x
         nodeView.card.y = y
+
+        if(nodeView.node.setId(idCount))
+            idCount++
 
         node.slots?.forEach { slot ->
             nodeView.addSlot(slot, this)
@@ -112,11 +118,12 @@ class FlowChart : ViewGroup {
         override fun onTouch(view: View, event: MotionEvent): Boolean {
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
+                    Log.d(TAG, "onTouch: DOWN ${(view as SlotView).slot.id}")
                     dX = view.x + view.width / 2
                     dY = view.y + view.height / 2
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    Log.d(TAG, "onTouch: outputListener MOVE")
+                    Log.d(TAG, "onTouch: outputListener")
                     var x = event.x + dX
                     var y = event.y + dY
                     bufferLine = Pair(x, y)
@@ -176,7 +183,7 @@ class FlowChart : ViewGroup {
                 MotionEvent.ACTION_MOVE -> {
                     if(System.currentTimeMillis()-lastTouch < 100) return false
 
-                    Log.d(TAG, "onTouch: MOVE")
+                    Log.d(TAG, "onTouch: MOVE ID: ${cardsHolder[view]?.node?.getId()}")
                     var x = event.x + view.x - dX
                     var y = event.y + view.y - dY
                     x += (SPACING - (x % SPACING))
@@ -368,10 +375,18 @@ class FlowChart : ViewGroup {
         }
     }
 
-    inner class Data {
-        var size = 1
-        var nodes = ArrayList<Node>()
-        var points = ArrayList<Point>()
+    inner class Link(
+        val idNodeA: Long,
+        val idNodeB: Long,
+        val idSlotA: Long,
+        val idSlotB: Long
+    )
+
+    inner class Data: Serializable {
+        var size: Int = 1
+        var nodes: ArrayList<Node> = ArrayList()
+        var links: ArrayList<Link> = ArrayList()
+        var points: ArrayList<Point> = ArrayList()
     }
 
     fun getData(): Data {
@@ -381,12 +396,33 @@ class FlowChart : ViewGroup {
         nodeViews.forEach { nodeView ->
             data.nodes.add(nodeView.node)
             data.points.add(Point(nodeView.card.x.toInt(),nodeView.card.y.toInt()))
+
+            nodeView.node.slots?.forEach { inputSlot ->
+
+                inputSlot.outputs?.forEach { outputSlot ->
+                    data.links.add(Link(
+                        inputSlot.parent.node.getId(),
+                        outputSlot.parent.node.getId(),
+                        inputSlot.id,
+                        outputSlot.id,
+                    ))
+                }
+
+            }
         }
         data.size = size
         return data
     }
 
-    fun restoreData(data: Data) {
+    private fun getNodeViewByID(id: Long): NodeView? {
+        for((_, nodeView) in cardsHolder) {
+            if(nodeView.node.getId() == id)
+                return nodeView
+        }
+        return null
+    }
+
+    fun restoreData(data: Data, restoreLinks: Boolean = false) {
         this.size = data.size
         setSize()
 
@@ -397,6 +433,17 @@ class FlowChart : ViewGroup {
                 data.points[i].y.toFloat()
             )
         }
+
+        if(restoreLinks) {
+            data.links.forEach { link ->
+                val nodeViewA = getNodeViewByID(link.idNodeA)!!
+                val nodeViewB = getNodeViewByID(link.idNodeB)!!
+
+                nodeViewA.createLink(nodeViewB,link.idSlotA,link.idSlotB)
+            }
+        }
+
+
         requestLayout()
         invalidate()
     }
@@ -410,6 +457,7 @@ class FlowChart : ViewGroup {
         savedState.nodes = data.nodes
         savedState.size = data.size
         savedState.coords = data.points
+        savedState.links = data.links
 
         return savedState
     }
@@ -422,8 +470,16 @@ class FlowChart : ViewGroup {
         data.nodes  = savedState.nodes
         data.points = savedState.coords
         data.size = savedState.size
+        data.links = savedState.links
 
-        restoreData(data)
+        data.nodes.forEach { node ->
+            node.slots?.forEach { slot ->
+                slot.inputs = null
+                slot.outputs = null
+            }
+        }
+
+        restoreData(data, true)
     }
 
     companion object {

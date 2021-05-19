@@ -71,6 +71,21 @@ class NodeView(val context: Context, parent: ViewGroup) {
         card.desc.text = str
     }
 
+    private fun getSloById(id: Long): Slot? {
+        slots.forEach { slot ->
+            if(slot.id == id)
+                return slot
+        }
+        return null
+    }
+
+    fun createLink(dest: NodeView, selfSlotId: Long, destSlotId: Long) {
+        val selfSlot = getSloById(selfSlotId)!!
+        val destSlot = dest.getSloById(destSlotId)!!
+
+        selfSlot.createLink(destSlot)
+    }
+
     fun computeMinimums() {
         // Checking the min dimension of the card
         minWidth = max((FlowChart.SPACING * 2f) * max(count[getIndex(Slot.Positions.BOTTOM)], count[getIndex(Slot.Positions.TOP)]), card.measuredWidth.toFloat())

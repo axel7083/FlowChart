@@ -6,7 +6,7 @@ import com.github.axel7083.flowchart.models.Node
 import com.github.axel7083.flowchart.models.Slot
 import com.github.axel7083.flowchart.views.NodeView
 
-class DisplayInputNode : Node {
+class DisplayInputNode : Node() {
 
     override val title: String = "Display Node"
     override val description: String = "Execute to show what is inputted"

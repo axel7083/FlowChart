@@ -7,7 +7,7 @@ import com.github.axel7083.flowchart.models.Node
 import com.github.axel7083.flowchart.models.Slot
 import com.github.axel7083.flowchart.views.NodeView
 
-class IntSumNode : Node, Slot.OnEvent {
+class IntSumNode : Node(), Slot.OnEvent {
 
     override val title: String = "Sum Node"
     override val description: String = "Sum inputs and output value"
@@ -32,12 +32,11 @@ class IntSumNode : Node, Slot.OnEvent {
         return arrayOf(sum)
     }
 
-    var i: Long = 0
+    var i: Long = 2
     override fun onSlotClicked(context: Context, slot: Slot, view: NodeView, flowChart: FlowChart) {
-        i++
-
         slots.add(view.addSlot(Slot(i,"\\/",Slot.Positions.TOP,true),flowChart))
         flowChart.invalidate()
+        i++
     }
 
     override fun onNodeClicked(context: Context, view: NodeView, flowChart: FlowChart) {
