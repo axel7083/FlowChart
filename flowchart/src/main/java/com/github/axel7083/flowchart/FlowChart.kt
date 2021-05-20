@@ -426,15 +426,18 @@ class FlowChart : ViewGroup {
 
     fun restoreData(data: Data, restoreLinks: Boolean = false) {
         this.size = data.size
+
         setSize()
 
         for(i in 0 until data.nodes.size) {
+            this.idCount = max(this.idCount, data.nodes[i].getId())
             addCard(
                 data.nodes[i],
                 data.points[i].x.toFloat(),
                 data.points[i].y.toFloat()
             )
         }
+        this.idCount++
 
         if(restoreLinks) {
             data.links.forEach { link ->
