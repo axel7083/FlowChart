@@ -382,7 +382,7 @@ class FlowChart : ViewGroup {
         val idNodeB: Long,
         val idSlotA: Long,
         val idSlotB: Long
-    )
+    ): Serializable
 
     class Data: Serializable {
         var size: Int = 1
