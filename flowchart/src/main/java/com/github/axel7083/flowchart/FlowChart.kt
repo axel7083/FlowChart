@@ -377,12 +377,10 @@ class FlowChart : ViewGroup {
         }
     }
 
-    inner class Link(
-        val idNodeA: Long,
-        val idNodeB: Long,
-        val idSlotA: Long,
-        val idSlotB: Long
-    ): Serializable
+    inner class Link(var idNodeA: Long = -1,
+                     var idNodeB: Long = -1,
+                     var idSlotA: Long = -1,
+                     var idSlotB: Long = -1): Serializable
 
     class Data: Serializable {
         var size: Int = 1
