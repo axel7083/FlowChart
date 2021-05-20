@@ -377,10 +377,12 @@ class FlowChart : ViewGroup {
         }
     }
 
-    inner class Link(var idNodeA: Long = -1,
-                     var idNodeB: Long = -1,
-                     var idSlotA: Long = -1,
-                     var idSlotB: Long = -1): Serializable
+    inner class Link: Serializable {
+        var idNodeA: Long = -1
+        var idNodeB: Long = -1
+        var idSlotA: Long = -1
+        var idSlotB: Long = -1
+    }
 
     class Data: Serializable {
         var size: Int = 1
@@ -400,12 +402,12 @@ class FlowChart : ViewGroup {
             nodeView.node.slots?.forEach { inputSlot ->
 
                 inputSlot.outputs?.forEach { outputSlot ->
-                    data.links.add(Link(
-                        inputSlot.parent.node.getId(),
-                        outputSlot.parent.node.getId(),
-                        inputSlot.id,
-                        outputSlot.id,
-                    ))
+                    val link = Link()
+                    link.idNodeA = inputSlot.parent.node.getId()
+                    link.idNodeB = outputSlot.parent.node.getId()
+                    link.idSlotA = inputSlot.id
+                    link.idSlotB = outputSlot.id
+                    data.links.add(link)
                 }
 
             }
