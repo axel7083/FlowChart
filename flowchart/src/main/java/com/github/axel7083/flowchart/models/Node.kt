@@ -1,12 +1,9 @@
 package com.github.axel7083.flowchart.models
 
 import android.content.Context
-import android.view.ViewGroup
 import com.github.axel7083.flowchart.FlowChart
 import com.github.axel7083.flowchart.views.NodeView
 import java.io.Serializable
-import java.lang.Exception
-import kotlin.properties.Delegates
 
 abstract class Node : Serializable {
     private var id: Long = -1L
@@ -28,4 +25,5 @@ abstract class Node : Serializable {
     abstract val description: String
     abstract fun execute(args : Array<*>?, context: Context, view: NodeView, flowChart: FlowChart) : Array<Any>?
     open fun onNodeClicked(context: Context, view: NodeView, flowChart: FlowChart) {}
+    open fun onSlotInitiated(slot: Slot, context: Context, view: NodeView, flowChart: FlowChart) {}
 }

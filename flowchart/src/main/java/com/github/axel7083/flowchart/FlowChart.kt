@@ -78,9 +78,11 @@ class FlowChart : ViewGroup {
 
         node.slots?.forEach { slot ->
             nodeView.addSlot(slot, this)
+            node.onSlotInitiated(slot,context, nodeView, this)
+
             if(slot.event != null) {
                 slot.view.setOnClickListener {view ->
-                    slot.event.onSlotClicked(context,slot, nodeView, this)
+                    slot.event!!.onSlotClicked(context,slot, nodeView, this)
                 }
             }
             else if(!slot.isInput) {

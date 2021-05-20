@@ -13,7 +13,7 @@ class IntSumNode : Node(), Slot.OnEvent {
     override val description: String = "Sum inputs and output value"
 
     override val slots = arrayListOf(
-            Slot(id=0, str="+", position=Slot.Positions.TOP, isInput=false,event=this, isStatic=true),
+            Slot(id=PLUS_SLOT_ID, str="+", position=Slot.Positions.TOP, isInput=false, isStatic=true),
             Slot(id=1, str="=", position=Slot.Positions.BOTTOM, isInput=false),
     )
 
@@ -39,11 +39,19 @@ class IntSumNode : Node(), Slot.OnEvent {
         i++
     }
 
-    override fun onNodeClicked(context: Context, view: NodeView, flowChart: FlowChart) {
-
+    override fun onSlotInitiated(
+        slot: Slot,
+        context: Context,
+        view: NodeView,
+        flowChart: FlowChart
+    ) {
+        Log.d(TAG, "onSlotInitiated: id: ${slot.id}")
+        if(slot.id == PLUS_SLOT_ID)
+            slot.event = this
     }
 
     companion object {
         private const val TAG = "IntSumNode"
+        private const val PLUS_SLOT_ID = 0L
     }
 }
