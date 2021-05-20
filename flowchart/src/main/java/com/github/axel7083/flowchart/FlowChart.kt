@@ -377,7 +377,7 @@ class FlowChart : ViewGroup {
         }
     }
 
-    inner class Link: Serializable {
+    class Link: Serializable {
         var idNodeA: Long = -1
         var idNodeB: Long = -1
         var idSlotA: Long = -1
