@@ -388,7 +388,7 @@ class FlowChart : ViewGroup {
         var size: Int = 1
         var nodes: ArrayList<Node> = ArrayList()
         var links: ArrayList<Link> = ArrayList()
-        var points: ArrayList<Point> = ArrayList()
+        var points: ArrayList<Point>? = ArrayList()
     }
 
     fun getData(): Data {
@@ -397,7 +397,7 @@ class FlowChart : ViewGroup {
         val nodeViews = cardsHolder.values
         nodeViews.forEach { nodeView ->
             data.nodes.add(nodeView.node)
-            data.points.add(Point(nodeView.card.x.toInt(),nodeView.card.y.toInt()))
+            data.points?.add(Point(nodeView.card.x.toInt(),nodeView.card.y.toInt()))
 
             nodeView.node.slots?.forEach { inputSlot ->
 
@@ -433,8 +433,8 @@ class FlowChart : ViewGroup {
             this.idCount = max(this.idCount, data.nodes[i].getId())
             addCard(
                 data.nodes[i],
-                data.points[i].x.toFloat(),
-                data.points[i].y.toFloat()
+                data.points?.get(i)?.x?.toFloat()?:0f,
+                data.points?.get(i)?.y?.toFloat()?:0f
             )
         }
         this.idCount++
@@ -461,7 +461,7 @@ class FlowChart : ViewGroup {
 
         savedState.nodes = data.nodes
         savedState.size = data.size
-        savedState.coords = data.points
+        savedState.coords = data.points!!
         savedState.links = data.links
 
         return savedState
