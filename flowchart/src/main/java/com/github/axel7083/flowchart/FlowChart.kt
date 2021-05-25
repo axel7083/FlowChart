@@ -73,8 +73,10 @@ class FlowChart : ViewGroup {
         nodeView.card.x = x
         nodeView.card.y = y
 
-        if(nodeView.node.setId(idCount))
-            idCount++
+
+        if(node.getId() == -1L)
+            if(nodeView.node.setId(idCount))
+                idCount++
 
         node.slots?.forEach { slot ->
             nodeView.addSlot(slot, this)
