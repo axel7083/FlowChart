@@ -8,7 +8,7 @@ import java.io.Serializable
 abstract class Node : Serializable {
     private var id: Long = -1L
 
-    internal fun setId(id: Long): Boolean {
+    fun setId(id: Long): Boolean {
         if(this.id == -1L) {
             this.id = id
             return true
